@@ -1,12 +1,26 @@
 Package: fmriqa
 Type: Package
-Title: fMRI quality assuance routines
+Title: fMRI quality assurance routines
 Version: 0.1.0.9000
 Date: 2017-11-22
 Authors@R: person("Martin", "Wilson", email = "martin@pipegrep.co.uk",
                role = c("cre","aut"))
-Description: Methods for performing fMRI QA measuments of test objects. Heavily
-based on the fBIRN procedures.
+Description: Methods for performing fMRI QA measuments of test objects. Heavily 
+  based on the fBIRN procedures.
+BugReports: https://github.com/martin3141/fmriqa/issues
 License: GPL-3
-Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
+Imports:
+  viridisLite,
+  RNifti,
+  RcppEigen,
+  ggplot2,
+  reshape2,
+  gridExtra,
+  grid,
+  tidyr,
+  optparse,
+  tcltk,
+  pracma
+Encoding: UTF-8
