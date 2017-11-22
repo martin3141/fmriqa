@@ -1,23 +1,24 @@
 #' Run fMRI quality assurance procedure on a NIfTI data file
-#' @param data_file a
-#' @param roi_width b
-#' @param slice_num c
-#' @param skip d
-#' @param tr e
-#' @param spike_detect f
-#' @param x_pos g
-#' @param y_pos h
-#' @param plot_title i
-#' @param last_vol j
-#' @param gen_png k
-#' @param gen_res_csv l
-#' @param gen_pdf m
-#' @param gen_spec_csv n
-#' @param png_fname p
-#' @param res_fname o
-#' @param pdf_fname q
-#' @param spec_fname r
-#' @param verbose s
+#'
+#' @param data_file input data in nifti format, a file chooser will open if not set
+#' @param roi_width roi analysis region in pixels (default=21)
+#' @param slice_num slice number for analysis (default=middle slice)
+#' @param skip number of initial volumes to exclude from the analysis (default=2)
+#' @param tr override the TR detected from data (seconds)
+#' @param spike_detect generate k-space spike-detection plot
+#' @param x_pos x position of ROI (default=COG)
+#' @param y_pos y position of ROI (default=COG)
+#' @param plot_title add a title to the png and pdf plots
+#' @param last_vol last volume number to use in the analysis
+#' @param gen_png output png plot (default=TRUE)
+#' @param gen_res_csv output csv results (default=TRUE)
+#' @param gen_pdf optput pdf plot
+#' @param gen_spec_csv output csv of spectral points
+#' @param png_fname png plot filename
+#' @param res_fname csv results filename
+#' @param pdf_fname pdf plot filename
+#' @param spec_fname csv spectal data filename
+#' @param verbose provide text output while running
 #' @return dataframe of QA metrics
 #'
 #' @import viridisLite

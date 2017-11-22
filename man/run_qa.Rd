@@ -9,44 +9,46 @@ run_qa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
   plot_title = NULL, last_vol = NULL, gen_png = TRUE,
   gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
   png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
-  spec_fname = NULL)
+  spec_fname = NULL, verbose = TRUE)
 }
 \arguments{
-\item{data_file}{a}
+\item{data_file}{input data in nifti format, a file chooser will open if not set}
 
-\item{roi_width}{b}
+\item{roi_width}{roi analysis region in pixels (default=21)}
 
-\item{slice_num}{c}
+\item{slice_num}{slice number for analysis (default=middle slice)}
 
-\item{skip}{d}
+\item{skip}{number of initial volumes to exclude from the analysis (default=2)}
 
-\item{tr}{e}
+\item{tr}{override the TR detected from data (seconds)}
 
-\item{spike_detect}{f}
+\item{spike_detect}{generate k-space spike-detection plot}
 
-\item{x_pos}{g}
+\item{x_pos}{x position of ROI (default=COG)}
 
-\item{y_pos}{h}
+\item{y_pos}{y position of ROI (default=COG)}
 
-\item{plot_title}{i}
+\item{plot_title}{add a title to the png and pdf plots}
 
-\item{last_vol}{j}
+\item{last_vol}{last volume number to use in the analysis}
 
-\item{gen_png}{k}
+\item{gen_png}{output png plot (default=TRUE)}
 
-\item{gen_res_csv}{l}
+\item{gen_res_csv}{output csv results (default=TRUE)}
 
-\item{gen_pdf}{m}
+\item{gen_pdf}{optput pdf plot}
 
-\item{gen_spec_csv}{n}
+\item{gen_spec_csv}{output csv of spectral points}
 
-\item{png_fname}{p}
+\item{png_fname}{png plot filename}
 
-\item{res_fname}{o}
+\item{res_fname}{csv results filename}
 
-\item{pdf_fname}{q}
+\item{pdf_fname}{pdf plot filename}
 
-\item{spec_fname}{r}
+\item{spec_fname}{csv spectal data filename}
+
+\item{verbose}{provide text output while running}
 }
 \value{
 dataframe of QA metrics
