@@ -13,10 +13,11 @@
 #' @param gen_res_csv l
 #' @param gen_pdf m
 #' @param gen_spec_csv n
-#' @param res_fname o
 #' @param png_fname p
+#' @param res_fname o
 #' @param pdf_fname q
 #' @param spec_fname r
+#' @param verbose s
 #' @return dataframe of QA metrics
 #'
 #' @import viridisLite
@@ -38,8 +39,8 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                    skip = 2, tr = NULL, spike_detect = FALSE, x_pos = NULL,
                    y_pos = NULL, plot_title = NULL, last_vol = NULL,
                    gen_png = TRUE, gen_res_csv = TRUE, gen_pdf = FALSE,
-                   gen_spec_csv = FALSE, res_fname = NULL, png_fname = NULL,
-                   pdf_fname = NULL, spec_fname = NULL) {
+                   gen_spec_csv = FALSE, png_fname = NULL, res_fname = NULL,
+                   pdf_fname = NULL, spec_fname = NULL, verbose = TRUE) {
 
   if (is.null(data_file)) {
     filters <- matrix(c("NIfTI", ".nii.gz", "NIfTI", ".nii",
@@ -60,7 +61,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   if (is.null(res_fname)) {
     csv_file <- paste(basename, "_qa_results.csv", sep = "")
   } else {
-    csv_file <- csv_fname
+    csv_file <- res_fname
   }
 
   if (is.null(png_fname)) {
@@ -84,7 +85,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   #image_cols <- inferno(64)
   image_cols <- viridis(64)
 
-  cat(paste("Reading data  : ", data_file, "\n\n", sep = ""))
+  if (verbose) cat(paste("Reading data  : ", data_file, "\n\n", sep = ""))
   data <- readNifti(data_file)
 
   x_dim <- dim(data)[1]
@@ -103,23 +104,23 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   dyns <- N - skip
   t <- seq(from = 0, by = tr, length.out = dyns)
-  t_full <- seq(from = 0, by = tr, length.out = N)
+  #t_full <- seq(from = 0, by = tr, length.out = N)
 
-  cat("Basic analysis parameters\n")
-  cat("-------------------------\n")
-  cat(paste("X,Y dims      : ", x_dim, "x", y_dim, "\n", sep = ""))
-  cat(paste("Slices        : ", z_dim, "\n", sep = ""))
-  cat(paste("TR            : ", round(tr, 2), "s\n", sep = ""))
-  cat(paste("Slice #       : ", slice_num, "\n", sep = ""))
-  cat(paste("ROI width     : ", roi_width, "\n", sep = ""))
-  cat(paste("Total vols    : ", dim(data)[4], "\n", sep = ""))
-  cat(paste("Analysis vols : ", dyns, "\n", sep = ""))
+  if (verbose) {
+    cat("Basic analysis parameters\n")
+    cat("-------------------------\n")
+    cat(paste("X,Y dims      : ", x_dim, "x", y_dim, "\n", sep = ""))
+    cat(paste("Slices        : ", z_dim, "\n", sep = ""))
+    cat(paste("TR            : ", round(tr, 2), "s\n", sep = ""))
+    cat(paste("Slice #       : ", slice_num, "\n", sep = ""))
+    cat(paste("ROI width     : ", roi_width, "\n", sep = ""))
+    cat(paste("Total vols    : ", dim(data)[4], "\n", sep = ""))
+    cat(paste("Analysis vols : ", dyns, "\n", sep = ""))
+  }
 
   # scale data
   # scl_slope <- dumpNifti(data)$scl_slope
   # data <- data * scl_slope
-
-
 
   # chop out the slice we will be working with
   data_raw <- data[,,slice_num,(skip + 1):N]
@@ -233,29 +234,31 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   RDC <- CV[1] / CV[length(CV)]
 
-  line1 <- (paste("Mean signal   : ", round(mean_sig_intensity, 1), "\n", sep = ""))
-  line2 <- (paste("STD           : ", round(sd_roi, 2), "\n", sep = ""))
-  line3 <- (paste("Percent fluc  : ", round(percent_fluc, 2), "\n", sep = ""))
-  line4 <- (paste("Drift         : ", round(percent_drift, 2), "\n", sep = ""))
-  line5 <- (paste("Drift fit     : ", round(percent_drift_fit, 2), "\n", sep = ""))
-  line6 <- (paste("SNR           : ", round(SNR, 1), "\n", sep = ""))
-  line7 <- (paste("SFNR          : ", round(av_SFNR, 1), "\n", sep = ""))
-  line8 <- (paste("RDC           : ", round(RDC, 2), "\n", sep = ""))
-  line9 <- (paste("TC outlier    : ", round(max_tc_outlier, 2), "\n", sep = ""))
-  line10 <- (paste("Spec outlier  : ", round(max_spec_outlier, 2), "\n", sep = ""))
+  line1  <- paste("Mean signal   : ", round(mean_sig_intensity, 1), "\n", sep = "")
+  line2  <- paste("STD           : ", round(sd_roi, 2), "\n", sep = "")
+  line3  <- paste("Percent fluc  : ", round(percent_fluc, 2), "\n", sep = "")
+  line4  <- paste("Drift         : ", round(percent_drift, 2), "\n", sep = "")
+  line5  <- paste("Drift fit     : ", round(percent_drift_fit, 2), "\n", sep = "")
+  line6  <- paste("SNR           : ", round(SNR, 1), "\n", sep = "")
+  line7  <- paste("SFNR          : ", round(av_SFNR, 1), "\n", sep = "")
+  line8  <- paste("RDC           : ", round(RDC, 2), "\n", sep = "")
+  line9  <- paste("TC outlier    : ", round(max_tc_outlier, 2), "\n", sep = "")
+  line10 <- paste("Spec outlier  : ", round(max_spec_outlier, 2), "\n", sep = "")
 
-  cat("\nfBIRN QA metrics\n")
-  cat("----------------\n")
-  cat(line1)
-  cat(line2)
-  cat(line3)
-  cat(line4)
-  cat(line5)
-  cat(line6)
-  cat(line7)
-  cat(line8)
-  cat(line9)
-  cat(line10)
+  if (verbose) {
+    cat("\nfBIRN QA metrics\n")
+    cat("----------------\n")
+    cat(line1)
+    cat(line2)
+    cat(line3)
+    cat(line4)
+    cat(line5)
+    cat(line6)
+    cat(line7)
+    cat(line8)
+    cat(line9)
+    cat(line10)
+  }
 
   if (is.null(plot_title)) plot_title <- NA
 
@@ -303,7 +306,6 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
       scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
   }
 
-
   # plotting stuff below
 
   theme_set(theme_bw())
@@ -323,7 +325,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     geom_point() + scale_x_log10(limits = c(1,100)) +
     scale_y_log10(limits = c(0.01,10), breaks = c(0.01,0.1,1,10)) +
     labs(y = "100*CV", x = "ROI width (pixels)", title = "RDC plot") + marg +
-    theme(legend.position = c(0.8, 0.8)) + scale_color_manual(values=c("black","red"))
+    theme(legend.position = c(0.8, 0.8)) + scale_color_manual(values = c("black","red"))
 
   tc_fit <- data.frame(t = vols, tc = mean_sig_intensity_t, fit = y_fit)
   tc_plot <- ggplot(tc_fit, aes(t)) + geom_line(aes(y = tc)) +
@@ -366,7 +368,6 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     marg + roi_a + roi_b + roi_c + roi_d +
     scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
 
-
   # useful for checking where the ROI really is
   # av_image[ROI_x,ROI_y] = 0
 
@@ -378,7 +379,6 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     marg + roi_a + roi_b + roi_c + roi_d +
     scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
 
-
   diff_plot <- ggplot(melt(DIFF), aes(Var1, Var2, fill = value)) +
     geom_raster(interpolate = TRUE) +
     scale_fill_gradientn(colours = image_cols) +
@@ -386,7 +386,6 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                                   title = "Odd-even difference") +
     marg + roi_a + roi_b + roi_c + roi_d +
     scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
-
 
   tfn_plot <- ggplot(melt(TFN), aes(Var1, Var2, fill = value)) +
     geom_raster(interpolate = TRUE) +
@@ -396,7 +395,6 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
          title = "Temporal fluctuation noise") +
     marg + roi_a + roi_b + roi_c + roi_d +
     scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
-
 
   slice_tc_plot <- ggplot(melt(slice_tc_dt), aes(x = Var1 + skip, y = value, group = Var2)) +
     geom_line(alpha = 0.5) +
@@ -449,11 +447,12 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     graphics.off()
   }
 
-
-  if (gen_pdf)      cat(paste("\nPDF report    : ", pdf_file, sep = ""))
-  if (gen_spec_csv) cat(paste("\nCSV spec file : ", spec_file, sep = ""))
-  if (gen_png)      cat(paste("\nPNG report    : ", png_file, sep = ""))
-  if (gen_res_csv)  cat(paste("\nCSV results   : ", csv_file, "\n\n", sep = ""))
+  if (verbose) {
+    if (gen_pdf)      cat(paste("\nPDF report    : ", pdf_file, sep = ""))
+    if (gen_spec_csv) cat(paste("\nCSV spec file : ", spec_file, sep = ""))
+    if (gen_png)      cat(paste("\nPNG report    : ", png_file, sep = ""))
+    if (gen_res_csv)  cat(paste("\nCSV results   : ", csv_file, "\n\n", sep = ""))
+  }
 
   results_tab
 }

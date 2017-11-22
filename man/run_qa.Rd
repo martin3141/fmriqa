@@ -8,7 +8,7 @@ run_qa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
   tr = NULL, spike_detect = FALSE, x_pos = NULL, y_pos = NULL,
   plot_title = NULL, last_vol = NULL, gen_png = TRUE,
   gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
-  res_fname = NULL, png_fname = NULL, pdf_fname = NULL,
+  png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
   spec_fname = NULL)
 }
 \arguments{
@@ -40,9 +40,9 @@ run_qa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{gen_spec_csv}{n}
 
-\item{res_fname}{o}
-
 \item{png_fname}{p}
+
+\item{res_fname}{o}
 
 \item{pdf_fname}{q}
 
