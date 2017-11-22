@@ -1,0 +1,22 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+fmriqa
+======
+
+## Overview
+
+## Installation
+You can install the stable version of fmriqa from CRAN:
+```{r cran, eval = FALSE}
+install.packages("fmriqa", dependencies = TRUE)
+```
+
+Or the the development version from GitHub (requires `devtools` package):
+```{r github, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("martin3141/fmriqa")
+```

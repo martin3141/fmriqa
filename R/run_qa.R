@@ -17,7 +17,7 @@
 #' @param png_fname png plot filename
 #' @param res_fname csv results filename
 #' @param pdf_fname pdf plot filename
-#' @param spec_fname csv spectal data filename
+#' @param spec_fname csv spectral data filename
 #' @param verbose provide text output while running
 #' @return dataframe of QA metrics
 #'

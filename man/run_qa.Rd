@@ -46,7 +46,7 @@ run_qa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{pdf_fname}{pdf plot filename}
 
-\item{spec_fname}{csv spectal data filename}
+\item{spec_fname}{csv spectral data filename}
 
 \item{verbose}{provide text output while running}
 }
