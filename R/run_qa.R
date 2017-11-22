@@ -192,7 +192,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   max_spec_outlier <- max(spec) / mad(spec)
 
-  x <- 1:(zp * N / 2)
+  # x <- 1:(zp * N / 2)
   t <- seq(from = 0, by = tr, length.out = dyns)
   vols <- seq(from = skip + 1, by = 1, length.out = dyns)
   freq <- seq(from = 0, to = (1 - 1/(zp * dyns / 2))/(tr * 2),
