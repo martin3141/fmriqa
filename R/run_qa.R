@@ -147,11 +147,11 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   DIFF <- apply(odd_dynamics, c(1, 2), sum) - apply(even_dynamics, c(1, 2), sum)
 
-  # flip directions
-  SFNR_full <- flipud(SFNR_full)
-  av_image <- flipud(av_image)
-  DIFF <- flipud(DIFF)
-  TFN <- flipud(TFN)
+  # flip lr direction
+  # SFNR_full <- flipud(SFNR_full)
+  # av_image <- flipud(av_image)
+  # DIFF <- flipud(DIFF)
+  # TFN <- flipud(TFN)
 
   # set na values to zero
   SFNR_full[is.na(SFNR_full)] <- 0
