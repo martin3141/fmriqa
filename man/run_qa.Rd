@@ -56,3 +56,9 @@ dataframe of QA metrics
 \description{
 Run fMRI quality assurance procedure on a NIfTI data file
 }
+\examples{
+\dontrun{
+run_qa("my_qa_data.nii.gz", plot_title = "Happy scanner")
+}
+
+}

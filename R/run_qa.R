@@ -20,6 +20,10 @@
 #' @param spec_fname csv spectral data filename
 #' @param verbose provide text output while running
 #' @return dataframe of QA metrics
+#' @examples
+#' \dontrun{
+#' run_qa("my_qa_data.nii.gz", plot_title = "Happy scanner")
+#' }
 #'
 #' @import viridisLite
 #' @import RNifti
