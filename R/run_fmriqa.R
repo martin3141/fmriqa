@@ -22,7 +22,7 @@
 #' @return dataframe of QA metrics
 #' @examples
 #' \dontrun{
-#' run_qa("my_qa_data.nii.gz", plot_title = "Happy scanner")
+#' run_fmriqa("my_qa_data.nii.gz", plot_title = "Happy scanner")
 #' }
 #'
 #' @import viridisLite
@@ -39,7 +39,7 @@
 #' @importFrom stats fft mad poly quantile sd
 #' @importFrom utils write.csv
 #' @export
-run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
+run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                    skip = 2, tr = NULL, spike_detect = FALSE, x_pos = NULL,
                    y_pos = NULL, plot_title = NULL, last_vol = NULL,
                    gen_png = TRUE, gen_res_csv = TRUE, gen_pdf = FALSE,

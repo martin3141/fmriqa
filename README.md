@@ -34,10 +34,10 @@ Usage
 library(fmriqa)
 
 # get help on the options for run_qa
-?run_qa
+?run_fmriqa
 
 # run the analysis - a file chooser will appear when a data_file argument is not given
-run_qa()
+run_fmriqa()
 ```
 
 Simualated example
@@ -60,10 +60,10 @@ fname <- tempfile()
 writeNIfTI(sim_nifti, fname)
 
 # perform qa
-res <- run_qa(fname)
+res <- run_fmriqa(fname)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpawTrQK\filec60154a120a
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -89,8 +89,8 @@ res <- run_qa(fname)
     ## Spec outlier  : 5.99
 
     ## 
-    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1_qa_plot.png
-    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1_qa_results.csv
+    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpawTrQK\filec60154a120a_qa_plot.png
+    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpawTrQK\filec60154a120a_qa_results.csv
 
 ``` r
 res$snr
