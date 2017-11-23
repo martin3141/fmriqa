@@ -27,7 +27,6 @@
 #'
 #' @import viridisLite
 #' @import RNifti
-#' @import RcppEigen
 #' @import ggplot2
 #' @import reshape2
 #' @import gridExtra
@@ -483,6 +482,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   results_tab
 }
 
+#' @import RcppEigen
 detrend_fast <- function(y, X) {
   fastLmPure(y = y, X = X)$residual
 }

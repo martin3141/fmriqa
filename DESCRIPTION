@@ -1,6 +1,6 @@
 Package: fmriqa
 Type: Package
-Title: fMRI quality assurance routines
+Title: Functional MRI Quality Assurance Routines
 Version: 0.1.0.9000
 Date: 2017-11-22
 Authors@R: person("Martin", "Wilson", email = "martin@pipegrep.co.uk",
@@ -16,7 +16,6 @@ RoxygenNote: 6.0.1
 Imports:
   viridisLite,
   RNifti,
-  RcppEigen,
   ggplot2,
   reshape2,
   gridExtra,
@@ -24,5 +23,6 @@ Imports:
   tidyr,
   optparse,
   tcltk,
+  RcppEigen,
   pracma
 Encoding: UTF-8
