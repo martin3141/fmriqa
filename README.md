@@ -40,6 +40,9 @@ library(fmriqa)
 run_qa()
 ```
 
+Simualated example
+------------------
+
 ``` r
 library(fmriqa)
 library(oro.nifti)
@@ -60,7 +63,7 @@ writeNIfTI(sim_nifti, fname)
 res <- run_qa(fname)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpshRVtK\file16a84aa423f1
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -86,8 +89,8 @@ res <- run_qa(fname)
     ## Spec outlier  : 5.99
 
     ## 
-    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpshRVtK\file16a84aa423f1_qa_plot.png
-    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpshRVtK\file16a84aa423f1_qa_results.csv
+    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1_qa_plot.png
+    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpELqDND\filec7c66c831c1_qa_results.csv
 
 ``` r
 res$snr
@@ -95,6 +98,7 @@ res$snr
 
     ## [1] 51.59899
 
-Here is a example png output file showing an RF spiking artifact:
+Plot output from real data showing RF spiking artifact
+------------------------------------------------------
 
 ![](SPIKE_EG_qa_plot.png)

@@ -38,6 +38,7 @@ library(fmriqa)
 run_qa()
 ```
 
+## Simualated example
 ```{r simulate, eval = TRUE}
 library(fmriqa)
 library(oro.nifti)
@@ -55,6 +56,6 @@ res <- run_qa(fname)
 res$snr
 ```
 
-Here is a example png output file showing an RF spiking artifact:
+## Plot output from real data showing RF spiking artifact
 
 ![](SPIKE_EG_qa_plot.png)
