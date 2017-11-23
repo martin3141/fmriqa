@@ -136,26 +136,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   av_image <- apply(data_raw, c(1,2), mean)
   SFNR_full <- av_image / TFN
 
-  # set na values to zero
-  SFNR_full[is.na(SFNR_full)] <- 0
-
-  if (is.null(x_pos)) {
-    x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * av_image) / sum(av_image)
-    x_pos <- round(x_pos)
-  }
-
-  if (is.null(y_pos)) {
-    y_pos <- sum(t(array(1:y_dim, c(x_dim, y_dim))) * av_image) / sum(av_image)
-    y_pos <- round(y_pos)
-  }
-
-  # get ROI indices
-  ROI_x <- get_pixel_range(x_pos, roi_width)
-  ROI_y <- get_pixel_range(y_pos, roi_width)
-
-  SFNR <- SFNR_full[ROI_x, ROI_y]
-  av_SFNR <- mean(SFNR)
-
+  # calc diff image
   odd_dynamics <- data_raw[,,c(TRUE, FALSE)]
   even_dynamics <- data_raw[,,c(FALSE, TRUE)]
 
@@ -165,6 +146,32 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   }
 
   DIFF <- apply(odd_dynamics, c(1, 2), sum) - apply(even_dynamics, c(1, 2), sum)
+
+  # flip directions
+  SFNR_full <- flipud(SFNR_full)
+  av_image <- flipud(av_image)
+  DIFF <- flipud(DIFF)
+  TFN <- flipud(TFN)
+
+  # set na values to zero
+  SFNR_full[is.na(SFNR_full)] <- 0
+
+  if (is.null(x_pos)) {
+    x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * av_image) / sum(av_image)
+    x_pos <- round(x_pos)
+  }
+
+  if (is.null(y_pos)) {
+    y_pos <- sum(t(array(1:y_dim, c(y_dim, x_dim))) * av_image) / sum(av_image)
+    y_pos <- round(y_pos)
+  }
+
+  # get ROI indices
+  ROI_x <- get_pixel_range(x_pos, roi_width)
+  ROI_y <- get_pixel_range(y_pos, roi_width)
+
+  SFNR <- SFNR_full[ROI_x, ROI_y]
+  av_SFNR <- mean(SFNR)
 
   DIFF_ROI <- DIFF[ROI_x, ROI_y]
 
@@ -358,6 +365,8 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   roi_d <- geom_segment(aes(x = x_st, xend = x_end, y = y_end, yend = y_end),
                         colour = lcol)
+
+
 
   top_val <- quantile(SFNR_full,0.999)
   SFNR_full <- ifelse(SFNR_full > top_val, top_val, SFNR_full)

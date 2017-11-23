@@ -24,6 +24,5 @@ Imports:
   tidyr,
   optparse,
   tcltk,
-  oro.nifti,
   pracma
 Encoding: UTF-8
