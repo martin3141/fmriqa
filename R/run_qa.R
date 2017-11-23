@@ -12,7 +12,7 @@
 #' @param last_vol last volume number to use in the analysis
 #' @param gen_png output png plot (default=TRUE)
 #' @param gen_res_csv output csv results (default=TRUE)
-#' @param gen_pdf optput pdf plot
+#' @param gen_pdf output pdf plot
 #' @param gen_spec_csv output csv of spectral points
 #' @param png_fname png plot filename
 #' @param res_fname csv results filename

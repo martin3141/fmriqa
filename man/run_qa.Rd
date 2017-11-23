@@ -36,7 +36,7 @@ run_qa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{gen_res_csv}{output csv results (default=TRUE)}
 
-\item{gen_pdf}{optput pdf plot}
+\item{gen_pdf}{output pdf plot}
 
 \item{gen_spec_csv}{output csv of spectral points}
 

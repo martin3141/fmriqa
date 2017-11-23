@@ -6,9 +6,9 @@
 \alias{fmriqa-package}
 \title{fmriqa: fMRI quality assurance routines}
 \description{
-The fmriqa package provides an implemenation of the fMRI QA analysis protocol
-detailed in : Friedman L and Glover GH. Report on a multicenter fMRI quality
-assurance protocol. J Magn Reson Imaging. 2006 Jun;23(6):827-39.
+The fmriqa package provides an implementation of the fMRI QA analysis
+protocol detailed in : Friedman L and Glover GH. Report on a multicenter fMRI
+quality assurance protocol. J Magn Reson Imaging. 2006 Jun;23(6):827-39.
 }
 \details{
 For a full list of functions:
