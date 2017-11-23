@@ -325,6 +325,17 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   text <- textGrob(raw_text, x = 0.2, just = 0, gp = gpar(fontfamily = "mono", fontsize = 14))
 
+  # these are to appease R checks
+  Measured <- NULL
+  Theoretical <- NULL
+  group <- NULL
+  roi_width_vec <- NULL
+  fit <- NULL
+  tc <- NULL
+  Var1 <- NULL
+  Var2 <- NULL
+  value <- NULL
+
   # RDC plot
   rdc_df <- data.frame(roi_width_vec = 1:roi_width, Theoretical = CV_ideal, Measured = CV)
   rdc_df <- gather(rdc_df, group, CV, c(Measured, Theoretical))
@@ -370,6 +381,7 @@ run_qa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   top_val <- quantile(SFNR_full,0.999)
   SFNR_full <- ifelse(SFNR_full > top_val, top_val, SFNR_full)
+
   sfnr_plot <- ggplot(melt(SFNR_full), aes(Var1, Var2, fill = value)) +
     geom_raster(interpolate = TRUE) +
     scale_fill_gradientn(colours = image_cols) +
