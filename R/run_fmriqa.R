@@ -98,7 +98,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   if (is.null(tr)) tr <- pixdim(data)[4]
 
-  if (is.null(slice_num)) slice_num <- round(dim(data)[3] / 2)
+  if (is.null(slice_num)) slice_num <- ceiling(dim(data)[3] / 2)
 
   if (is.null(last_vol)) {
     N <- dim(data)[4]
@@ -127,12 +127,13 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   # data <- data * scl_slope
 
   # chop out the slice we will be working with
-  data_raw <- data[,,slice_num,(skip + 1):N]
+  data_raw <- data[,,slice_num, (skip + 1):N]
 
   # detrend data with 2nd order polynomial
   X <- poly(1:dyns, 2)[,]
   X <- cbind(1,X)
-  data_detrend <- aperm(apply(data_raw,c(1,2),detrend_fast,X),c(2,3,1))
+  data_detrend <- apply(data_raw, c(1,2), detrend_fast, X)
+  data_detrend <- aperm(data_detrend, c(2,3,1))
 
   # calculate temporal fluctuation noise (TFN)
   TFN <- apply(data_detrend, c(1,2), sd)
@@ -209,7 +210,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
               length.out = zp * dyns / 2)
 
   # get a mean time course for each slice
-  slice_tc <- apply(data[,,,(skip + 1):N], c(3, 4), mean)
+  slice_tc <- apply(data[,,,(skip + 1):N, drop = FALSE], c(3, 4), mean)
 
   # detrend
   X <- poly(1:dyns, 2)[,]

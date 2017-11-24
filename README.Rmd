@@ -8,11 +8,9 @@ fmriqa
 ======
 
 ## Overview
-The fmriqa package provides an implemenation of the fMRI QA analysis protocol
-detailed in:
-
-Friedman L and Glover GH. Report on a multicenter fMRI quality assurance 
-protocol. J Magn Reson Imaging. 2006 Jun;23(6):827-39.
+The fmriqa package provides an implemenation of the fMRI quality assurance (QA) 
+analysis protocol detailed by Friedman and Glover (2006) 
+<doi:10.1002/jmri.20583>.
 
 ## Installation
 You can install the stable version of fmriqa from CRAN:
@@ -45,8 +43,8 @@ library(oro.nifti)
 
 # generate random data
 set.seed(1)
-sim_data <- array(rnorm(80 * 80 * 11 * 100), dim = c(80, 80, 11, 100))
-sim_data[20:60, 20:60, 6, ] <- sim_data[20:60, 20:60, 6, ] + 50
+sim_data <- array(rnorm(80 * 80 * 1 * 100), dim = c(80, 80, 1, 100))
+sim_data[20:60, 20:60, 1, ] <- sim_data[20:60, 20:60, 1, ] + 50
 sim_nifti <- oro.nifti::as.nifti(sim_data)
 fname <- tempfile()
 writeNIfTI(sim_nifti, fname)

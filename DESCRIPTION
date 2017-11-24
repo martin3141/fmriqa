@@ -5,10 +5,9 @@ Version: 0.1.0
 Date: 2017-11-22
 Authors@R: person("Martin", "Wilson", email = "martin@pipegrep.co.uk",
                    role = c("cre","aut"))
-Description: Methods for performing fMRI QA measurements of test objects. 
-  Heavily  based on the fBIRN procedures detailed in : Friedman L and Glover GH.
-  Report on a multicenter fMRI quality assurance protocol. J Magn Reson Imaging. 
-  2006 Jun;23(6):827-39.
+Description: Methods for performing fMRI quality assurance (QA) measurements of
+  test objects. Heavily  based on the fBIRN procedures detailed by Friedman and 
+  Glover (2006) <doi:10.1002/jmri.20583>.
 BugReports: https://github.com/martin3141/fmriqa/issues
 License: GPL-3
 LazyData: true
