@@ -58,6 +58,6 @@ Run fMRI quality assurance procedure on a NIfTI data file
 }
 \examples{
 fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
-res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE)
+res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 3)
 
 }
