@@ -1,3 +1,9 @@
+## Resubmission
+* QA abbreviations now given.
+* Example data added to pacakge.
+* Realistic use case now given for run_fmriqa using example data.
+* DOI referencing style adopted.
+
 ## Test environments
 
 * Windows 7, R 3.4.2
