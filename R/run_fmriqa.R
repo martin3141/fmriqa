@@ -257,8 +257,8 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   line10 <- paste("Spec outlier  : ", round(max_spec_outlier, 2), "\n", sep = "")
 
   if (verbose) {
-    cat("\nfBIRN QA metrics\n")
-    cat("----------------\n")
+    cat("\QA metrics\n")
+    cat("-----------\n")
     cat(line1)
     cat(line2)
     cat(line3)
