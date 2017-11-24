@@ -5,25 +5,24 @@
 #' @param slice_num slice number for analysis (default=middle slice)
 #' @param skip number of initial volumes to exclude from the analysis (default=2)
 #' @param tr override the TR detected from data (seconds)
-#' @param spike_detect generate k-space spike-detection plot
-#' @param x_pos x position of ROI (default=COG)
-#' @param y_pos y position of ROI (default=COG)
+#' @param spike_detect generate k-space spike-detection plot (default=FALSE)
+#' @param x_pos x position of ROI (default=center of gravity)
+#' @param y_pos y position of ROI (default=center of gravity)
 #' @param plot_title add a title to the png and pdf plots
 #' @param last_vol last volume number to use in the analysis
 #' @param gen_png output png plot (default=TRUE)
 #' @param gen_res_csv output csv results (default=TRUE)
-#' @param gen_pdf output pdf plot
-#' @param gen_spec_csv output csv of spectral points
+#' @param gen_pdf output pdf plot (default=FALSE)
+#' @param gen_spec_csv output csv of spectral points (default=FALSE)
 #' @param png_fname png plot filename
 #' @param res_fname csv results filename
 #' @param pdf_fname pdf plot filename
 #' @param spec_fname csv spectral data filename
-#' @param verbose provide text output while running
+#' @param verbose provide text output while running (default=TRUE)
 #' @return dataframe of QA metrics
 #' @examples
-#' \dontrun{
-#' run_fmriqa("my_qa_data.nii.gz", plot_title = "Happy scanner")
-#' }
+#' fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
+#' res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 3)
 #'
 #' @import viridisLite
 #' @import RNifti
@@ -292,11 +291,14 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     write.csv(spec_out, spec_file, row.names = FALSE)
   }
 
+  # plotting stuff below
+  if (gen_pdf | gen_png) {
+
   # spike detection plot
   if (spike_detect) {
     cat("\nCalculating k-space spike detection map...\n")
     # calc diff volumes
-    diff_vols <- apply(data[,,,(skip + 1):N], c(1,2,3), diff)
+    diff_vols <- apply(data[,,,(skip + 1):N, drop = FALSE], c(1,2,3), diff)
     diff_vols <- aperm(diff_vols, c(2,3,4,1))
 
     # transform all slices into k-space
@@ -318,7 +320,6 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
       scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
   }
 
-  # plotting stuff below
 
   theme_set(theme_bw())
 
@@ -472,6 +473,9 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     }
     graphics.off()
   }
+  }
+
+  # end of plotting
 
   if (verbose) {
     if (gen_pdf)      cat(paste("\nPDF report    : ", pdf_file, sep = ""))

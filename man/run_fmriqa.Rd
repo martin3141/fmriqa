@@ -22,11 +22,11 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{tr}{override the TR detected from data (seconds)}
 
-\item{spike_detect}{generate k-space spike-detection plot}
+\item{spike_detect}{generate k-space spike-detection plot (default=FALSE)}
 
-\item{x_pos}{x position of ROI (default=COG)}
+\item{x_pos}{x position of ROI (default=center of gravity)}
 
-\item{y_pos}{y position of ROI (default=COG)}
+\item{y_pos}{y position of ROI (default=center of gravity)}
 
 \item{plot_title}{add a title to the png and pdf plots}
 
@@ -36,9 +36,9 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{gen_res_csv}{output csv results (default=TRUE)}
 
-\item{gen_pdf}{output pdf plot}
+\item{gen_pdf}{output pdf plot (default=FALSE)}
 
-\item{gen_spec_csv}{output csv of spectral points}
+\item{gen_spec_csv}{output csv of spectral points (default=FALSE)}
 
 \item{png_fname}{png plot filename}
 
@@ -48,7 +48,7 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 
 \item{spec_fname}{csv spectral data filename}
 
-\item{verbose}{provide text output while running}
+\item{verbose}{provide text output while running (default=TRUE)}
 }
 \value{
 dataframe of QA metrics
@@ -57,8 +57,7 @@ dataframe of QA metrics
 Run fMRI quality assurance procedure on a NIfTI data file
 }
 \examples{
-\dontrun{
-run_fmriqa("my_qa_data.nii.gz", plot_title = "Happy scanner")
-}
+fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
+res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE)
 
 }
