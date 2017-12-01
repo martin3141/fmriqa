@@ -39,7 +39,14 @@ library(fmriqa)
 run_fmriqa()
 ```
 
-## Simualated example
+## Real data example
+```{r real_data, eval = TRUE}
+library(fmriqa)
+fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
+res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 3)
+```
+
+## Simulation example
 ```{r simulate, eval = TRUE}
 library(fmriqa)
 library(oro.nifti)
