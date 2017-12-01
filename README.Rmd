@@ -7,6 +7,8 @@ output: github_document
 fmriqa
 ======
 
+[![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html)
+
 ## Overview
 The fmriqa package provides an implemenation of the fMRI quality assurance (QA) 
 analysis protocol detailed by Friedman and Glover (2006) 
