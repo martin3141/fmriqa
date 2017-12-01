@@ -8,6 +8,7 @@ fmriqa
 ======
 
 [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa)
 
 ## Overview
 The fmriqa package provides an implemenation of the fMRI quality assurance (QA) 
