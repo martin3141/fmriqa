@@ -3,7 +3,7 @@
 fmriqa
 ======
 
-[![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa)
+[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa)
 
 Overview
 --------
@@ -97,7 +97,7 @@ writeNIfTI(sim_nifti, fname)
 res <- run_fmriqa(fname)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpoNy8lx\file189024e93ebf
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -123,8 +123,8 @@ res <- run_fmriqa(fname)
     ## Spec outlier  : 4.11
 
     ## 
-    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpoNy8lx\file189024e93ebf_qa_plot.png
-    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpoNy8lx\file189024e93ebf_qa_results.csv
+    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3_qa_plot.png
+    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3_qa_results.csv
 
 ``` r
 res$snr
