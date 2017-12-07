@@ -35,7 +35,7 @@
 #' @import tcltk
 #' @import pracma
 #' @importFrom grDevices graphics.off pdf png
-#' @importFrom stats fft mad poly quantile sd
+#' @importFrom stats fft mad poly quantile sd median
 #' @importFrom utils write.csv
 #' @export
 run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
@@ -159,13 +159,17 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   # set na values to zero
   SFNR_full[is.na(SFNR_full)] <- 0
 
+  # threshold the image to reduce inhomogenity for cog calc
+  cog_image <- av_image > quantile(av_image, .6)
+  #cog_image <- av_image
+
   if (is.null(x_pos)) {
-    x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * av_image) / sum(av_image)
+    x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * cog_image) / sum(cog_image)
     x_pos <- round(x_pos)
   }
 
   if (is.null(y_pos)) {
-    y_pos <- sum(t(array(1:y_dim, c(y_dim, x_dim))) * av_image) / sum(av_image)
+    y_pos <- sum(t(array(1:y_dim, c(y_dim, x_dim))) * cog_image) / sum(cog_image)
     y_pos <- round(y_pos)
   }
 
@@ -310,7 +314,8 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     max_slice_proj <- apply(apply(max_slice_proj, 1, fftshift), 1,
                             fftshift)
 
-    max_z <- max(max_slice_proj) / 4
+    #max_z <- max(max_slice_proj) / 4
+    max_z <- mad(max_slice_proj) * 8 + median(max_slice_proj)
     max_slice_proj <- ifelse(max_slice_proj > max_z, max_z, max_slice_proj)
     max_slice_proj_plot <- ggplot(melt(max_slice_proj), aes(Var1, Var2, fill = value)) +
       geom_raster(interpolate = TRUE) +
