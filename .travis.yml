@@ -11,3 +11,13 @@ os:
 environment:
   global:
     WARNINGS_ARE_ERORRS: 1
+
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+
+r_github_packages:
+  - jimhester/covr
+
+after_success:
+  - Rscript -e 'covr::coveralls(type = "all")'
