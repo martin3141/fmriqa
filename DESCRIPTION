@@ -25,3 +25,9 @@ Imports:
   RcppEigen,
   pracma
 Encoding: UTF-8
+Suggests: 
+    testthat,
+    covr,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
