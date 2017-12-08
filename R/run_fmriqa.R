@@ -5,6 +5,7 @@
 #' @param slice_num slice number for analysis (default=middle slice)
 #' @param skip number of initial volumes to exclude from the analysis (default=2)
 #' @param tr override the TR detected from data (seconds)
+#' @param poly_det_ord polynomial order used for detrending (default=3)
 #' @param spike_detect generate k-space spike-detection plot (default=FALSE)
 #' @param x_pos x position of ROI (default=center of gravity)
 #' @param y_pos y position of ROI (default=center of gravity)
@@ -39,11 +40,12 @@
 #' @importFrom utils write.csv
 #' @export
 run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
-                   skip = 2, tr = NULL, spike_detect = FALSE, x_pos = NULL,
-                   y_pos = NULL, plot_title = NULL, last_vol = NULL,
-                   gen_png = TRUE, gen_res_csv = TRUE, gen_pdf = FALSE,
-                   gen_spec_csv = FALSE, png_fname = NULL, res_fname = NULL,
-                   pdf_fname = NULL, spec_fname = NULL, verbose = TRUE) {
+                   skip = 2, tr = NULL, poly_det_ord = 3, spike_detect = FALSE,
+                   x_pos = NULL, y_pos = NULL, plot_title = NULL,
+                   last_vol = NULL, gen_png = TRUE, gen_res_csv = TRUE,
+                   gen_pdf = FALSE, gen_spec_csv = FALSE, png_fname = NULL,
+                   res_fname = NULL, pdf_fname = NULL, spec_fname = NULL,
+                   verbose = TRUE) {
 
   if (is.null(data_file)) {
     filters <- matrix(c("NIfTI", ".nii.gz", "NIfTI", ".nii",
@@ -128,8 +130,8 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   # chop out the slice we will be working with
   data_raw <- data[,,slice_num, (skip + 1):N]
 
-  # detrend data with 2nd order polynomial
-  X <- poly(1:dyns, 2)[,]
+  # detrend data with polynomial
+  X <- poly(1:dyns, poly_det_ord)[,]
   X <- cbind(1,X)
   data_detrend <- apply(data_raw, c(1,2), detrend_fast, X)
   data_detrend <- aperm(data_detrend, c(2,3,1))
@@ -216,7 +218,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   slice_tc <- apply(data[,,,(skip + 1):N, drop = FALSE], c(3, 4), mean)
 
   # detrend
-  X <- poly(1:dyns, 2)[,]
+  X <- poly(1:dyns, poly_det_ord)[,]
   X <- cbind(1, X)
   slice_tc_dt <- apply(slice_tc, 1, detrend_fast, X)
 
@@ -238,7 +240,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     mean_sig_intensity <- mean(mean_sig_intensity_t)
 
     # detrend
-    X <- poly(1:dyns, 2)[,]
+    X <- poly(1:dyns, poly_det_ord)[,]
     X <- cbind(1,X)
     mean_sig_intensity_t_dt <- detrend_fast(y = mean_sig_intensity_t, X = X)
 

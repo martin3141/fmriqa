@@ -5,8 +5,8 @@
 \title{Run fMRI quality assurance procedure on a NIfTI data file}
 \usage{
 run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
-  tr = NULL, spike_detect = FALSE, x_pos = NULL, y_pos = NULL,
-  plot_title = NULL, last_vol = NULL, gen_png = TRUE,
+  tr = NULL, poly_det_ord = 3, spike_detect = FALSE, x_pos = NULL,
+  y_pos = NULL, plot_title = NULL, last_vol = NULL, gen_png = TRUE,
   gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
   png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
   spec_fname = NULL, verbose = TRUE)
@@ -21,6 +21,8 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 \item{skip}{number of initial volumes to exclude from the analysis (default=2)}
 
 \item{tr}{override the TR detected from data (seconds)}
+
+\item{poly_det_ord}{polynomial order used for detrending (default=3)}
 
 \item{spike_detect}{generate k-space spike-detection plot (default=FALSE)}
 
