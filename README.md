@@ -3,7 +3,7 @@
 fmriqa
 ======
 
-[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa)
+[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa) [![Coverage status](https://coveralls.io/repos/github/martin3141/fmriqa/badge.svg)](https://coveralls.io/r/martin3141/fmriqa?branch=master)
 
 Overview
 --------
@@ -64,15 +64,15 @@ res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 
     ## QA metrics
     ## ----------
     ## Mean signal   : 2561.3
-    ## STD           : 6.47
+    ## STD           : 6.4
     ## Percent fluc  : 0.25
     ## Drift         : 2.06
-    ## Drift fit     : 1.23
+    ## Drift fit     : 1.42
     ## SNR           : 141.3
-    ## SFNR          : 136.4
-    ## RDC           : 2.83
-    ## TC outlier    : 2.79
-    ## Spec outlier  : 5.03
+    ## SFNR          : 137
+    ## RDC           : 2.84
+    ## TC outlier    : 2.66
+    ## Spec outlier  : 5.12
 
 Simulation example
 ------------------
@@ -97,7 +97,7 @@ writeNIfTI(sim_nifti, fname)
 res <- run_fmriqa(fname)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -115,16 +115,16 @@ res <- run_fmriqa(fname)
     ## STD           : 0.05
     ## Percent fluc  : 0.09
     ## Drift         : 0.45
-    ## Drift fit     : 0.01
+    ## Drift fit     : 0.06
     ## SNR           : 51.7
-    ## SFNR          : 51
-    ## RDC           : 21.69
-    ## TC outlier    : 2.73
-    ## Spec outlier  : 4.11
+    ## SFNR          : 51.2
+    ## RDC           : 21.77
+    ## TC outlier    : 2.74
+    ## Spec outlier  : 4.04
 
     ## 
-    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3_qa_plot.png
-    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpKcMiue\file1db86ba54e3_qa_results.csv
+    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006_qa_plot.png
+    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006_qa_results.csv
 
 ``` r
 res$snr
