@@ -8,7 +8,7 @@ fmriqa
 Overview
 --------
 
-The fmriqa package provides an implemenation of the fMRI quality assurance (QA) analysis protocol detailed by Friedman and Glover (2006) <doi:10.1002/jmri.20583>.
+The fmriqa package provides an implementation of the fMRI quality assurance (QA) analysis protocol detailed by Friedman and Glover (2006) <doi:10.1002/jmri.20583>.
 
 Installation
 ------------
@@ -97,7 +97,7 @@ writeNIfTI(sim_nifti, fname)
 res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\Rtmpwv9stU\file32405f4d61ce
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpC28y9D\file14d07b4d5a
     ## 
     ## Basic analysis parameters
     ## -------------------------

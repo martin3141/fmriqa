@@ -14,7 +14,7 @@ fmriqa
 [![Coverage status](https://coveralls.io/repos/github/martin3141/fmriqa/badge.svg)](https://coveralls.io/r/martin3141/fmriqa?branch=master)
 
 ## Overview
-The fmriqa package provides an implemenation of the fMRI quality assurance (QA) 
+The fmriqa package provides an implementation of the fMRI quality assurance (QA) 
 analysis protocol detailed by Friedman and Glover (2006) 
 <doi:10.1002/jmri.20583>.
 
