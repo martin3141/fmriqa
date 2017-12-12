@@ -35,7 +35,7 @@ devtools::install_github("martin3141/fmriqa")
 # load the package
 library(fmriqa)
 
-# get help on the options for run_qa
+# get help on the options for run_fmriqa
 ?run_fmriqa
 
 # run the analysis - a file chooser will appear when a data_file argument is not given
@@ -63,7 +63,7 @@ fname <- tempfile()
 writeNIfTI(sim_nifti, fname)
 
 # perform qa
-res <- run_fmriqa(fname)
+res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
 res$snr
 ```
 

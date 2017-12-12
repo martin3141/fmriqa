@@ -33,7 +33,7 @@ Usage
 # load the package
 library(fmriqa)
 
-# get help on the options for run_qa
+# get help on the options for run_fmriqa
 ?run_fmriqa
 
 # run the analysis - a file chooser will appear when a data_file argument is not given
@@ -94,10 +94,10 @@ fname <- tempfile()
 writeNIfTI(sim_nifti, fname)
 
 # perform qa
-res <- run_fmriqa(fname)
+res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006
+    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\Rtmpwv9stU\file32405f4d61ce
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -121,10 +121,6 @@ res <- run_fmriqa(fname)
     ## RDC           : 21.77
     ## TC outlier    : 2.74
     ## Spec outlier  : 4.04
-
-    ## 
-    ## PNG report    : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006_qa_plot.png
-    ## CSV results   : C:\Users\wilsonmp\AppData\Local\Temp\RtmpW8pDDc\file259c44a83006_qa_results.csv
 
 ``` r
 res$snr
