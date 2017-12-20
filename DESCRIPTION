@@ -1,8 +1,8 @@
 Package: fmriqa
 Type: Package
 Title: Functional MRI Quality Assurance Routines
-Version: 0.2.0.9000
-Date: 2017-12-07
+Version: 0.2.0
+Date: 2017-12-20
 Authors@R: person("Martin", "Wilson", email = "martin@pipegrep.co.uk",
                    role = c("cre","aut"))
 Description: Methods for performing fMRI quality assurance (QA) measurements of
