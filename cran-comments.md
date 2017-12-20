@@ -1,3 +1,5 @@
+Changed doi format in the vignette.
+
 ## Test environments
 
 * Windows 7, R 3.4.2
