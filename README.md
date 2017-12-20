@@ -3,7 +3,7 @@
 fmriqa
 ======
 
-[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa) [![Coverage status](https://coveralls.io/repos/github/martin3141/fmriqa/badge.svg)](https://coveralls.io/r/martin3141/fmriqa?branch=master)
+[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa) [![Coverage Status](https://coveralls.io/repos/github/martin3141/fmriqa/badge.svg?branch=master)](https://coveralls.io/github/martin3141/fmriqa?branch=master)
 
 Overview
 --------
@@ -49,7 +49,7 @@ fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
 res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 3)
 ```
 
-    ## Reading data  : E:/Program Files/R/R-3.4.2/library/fmriqa/extdata/qa_data.nii.gz
+    ## Reading data  : C:/Users/home/Documents/R/win-library/3.4/fmriqa/extdata/qa_data.nii.gz
     ## 
     ## Basic analysis parameters
     ## -------------------------
@@ -97,7 +97,7 @@ writeNIfTI(sim_nifti, fname)
 res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
 ```
 
-    ## Reading data  : C:\Users\wilsonmp\AppData\Local\Temp\RtmpC28y9D\file14d07b4d5a
+    ## Reading data  : C:\Users\home\AppData\Local\Temp\Rtmpue4USt\file205c578c3088
     ## 
     ## Basic analysis parameters
     ## -------------------------
