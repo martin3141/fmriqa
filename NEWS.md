@@ -1,3 +1,7 @@
+# fmriqa 0.3.0
+* Improved method for calculating the object center of gravity for automated
+ROI placement.
+
 # fmriqa 0.2.0
 * Added an argument for the polynomial detrending order and changed the default
 from 2 to 3.

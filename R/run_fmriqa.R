@@ -162,8 +162,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   SFNR_full[is.na(SFNR_full)] <- 0
 
   # threshold the image to reduce inhomogenity for cog calc
-  cog_image <- av_image > quantile(av_image, .6)
-  #cog_image <- av_image
+  cog_image <- imager::threshold(imager::as.cimg(av_image))[,]
 
   if (is.null(x_pos)) {
     x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * cog_image) / sum(cog_image)
