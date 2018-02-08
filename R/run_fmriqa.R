@@ -99,6 +99,10 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   if (is.null(tr)) tr <- pixdim(data)[4]
 
+  x_pix_dim <- pixdim(data)[1]
+  y_pix_dim <- pixdim(data)[2]
+  z_pix_dim <- pixdim(data)[3]
+
   if (is.null(slice_num)) slice_num <- ceiling(dim(data)[3] / 2)
 
   if (is.null(last_vol)) {
@@ -114,13 +118,14 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   if (verbose) {
     cat("Basic analysis parameters\n")
     cat("-------------------------\n")
-    cat(paste("X,Y dims      : ", x_dim, "x", y_dim, "\n", sep = ""))
-    cat(paste("Slices        : ", z_dim, "\n", sep = ""))
-    cat(paste("TR            : ", round(tr, 2), "s\n", sep = ""))
-    cat(paste("Slice #       : ", slice_num, "\n", sep = ""))
-    cat(paste("ROI width     : ", roi_width, "\n", sep = ""))
-    cat(paste("Total vols    : ", dim(data)[4], "\n", sep = ""))
-    cat(paste("Analysis vols : ", dyns, "\n", sep = ""))
+    cat(paste("X,Y matrix     : ", x_dim, "x", y_dim, "\n", sep = ""))
+    cat(paste("Slices         : ", z_dim, "\n", sep = ""))
+    cat(paste("X,Y,Z pix dims : ", x_pix_dim, "x", y_pix_dim, "x", z_pix_dim, "mm\n", sep = ""))
+    cat(paste("TR             : ", round(tr, 2), "s\n", sep = ""))
+    cat(paste("Slice #        : ", slice_num, "\n", sep = ""))
+    cat(paste("ROI width      : ", roi_width, "\n", sep = ""))
+    cat(paste("Total vols     : ", dim(data)[4], "\n", sep = ""))
+    cat(paste("Analysis vols  : ", dyns, "\n", sep = ""))
   }
 
   # scale data
@@ -162,7 +167,23 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   SFNR_full[is.na(SFNR_full)] <- 0
 
   # threshold the image to reduce inhomogenity for cog calc
-  cog_image <- imager::threshold(imager::as.cimg(av_image))[,]
+  av_image_cimg <- imager::as.cimg(av_image)
+  obj_thr <- imager::threshold(av_image_cimg)
+  cog_image <- obj_thr[,]
+
+  # mean object intensity
+  mean_obj_inten <- mean(av_image_cimg[obj_thr])
+
+  # find max background intensity
+  pix_dim <- min(c(x_pix_dim, y_pix_dim))
+  # grow by 25mm
+  obj_thr_bg <- imager::grow(obj_thr, round(25/pix_dim))
+  bg <- av_image_cimg
+  bg[obj_thr_bg] <- 0
+  # blur by 12mm
+  bg_blur <- imager::boxblur(bg, round(12/pix_dim))
+  max_bg <- max(bg_blur)
+  max_bg_perc <- 100 * max_bg / mean_obj_inten
 
   if (is.null(x_pos)) {
     x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * cog_image) / sum(cog_image)
@@ -260,6 +281,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   line8  <- paste("RDC           : ", round(RDC, 2), "\n", sep = "")
   line9  <- paste("TC outlier    : ", round(max_tc_outlier, 2), "\n", sep = "")
   line10 <- paste("Spec outlier  : ", round(max_spec_outlier, 2), "\n", sep = "")
+  line11 <- paste("MBG percent   : ", round(max_bg_perc, 2), "\n", sep = "")
 
   if (verbose) {
     cat("\nQA metrics\n")
@@ -274,6 +296,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     cat(line8)
     cat(line9)
     cat(line10)
+    cat(line11)
   }
 
   if (is.null(plot_title)) plot_title <- NA
@@ -283,7 +306,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                             percent_fluc = percent_fluc, drift = percent_drift,
                             drift_fit = percent_drift_fit, snr = SNR,
                             sfnr = av_SFNR, rdc = RDC, tc_outlier = max_tc_outlier,
-                            spec_outlier = max_spec_outlier)
+                            spec_outlier = max_spec_outlier, max_bg_perc = max_bg_perc)
 
   if (gen_res_csv) {
     write.csv(results_tab, csv_file, row.names = FALSE)
@@ -331,10 +354,10 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   marg <- theme(plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm"))
 
-  raw_text <- paste(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10,
-                    sep = "")
+  raw_text <- paste(line1, line2, line3, line4, line5, line6, line7, line8,
+                    line9, line10, line11, sep = "")
 
-  text <- textGrob(raw_text, x = 0.2, just = 0, gp = gpar(fontfamily = "mono", fontsize = 14))
+  text <- textGrob(raw_text, x = 0.2, just = 0, gp = gpar(fontfamily = "mono", fontsize = 12))
 
   # these are to appease R checks
   Measured <- NULL
