@@ -5,6 +5,7 @@
 #' @param slice_num slice number for analysis (default=middle slice)
 #' @param skip number of initial volumes to exclude from the analysis (default=2)
 #' @param tr override the TR detected from data (seconds)
+#' @param pix_dim override the x,y,z pixel dimensions (mm) detected from data eg pixdim=c(3,3,3)
 #' @param poly_det_ord polynomial order used for detrending (default=3)
 #' @param spike_detect generate k-space spike-detection plot (default=FALSE)
 #' @param x_pos x position of ROI (default=center of gravity)
@@ -40,7 +41,7 @@
 #' @importFrom utils write.csv
 #' @export
 run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
-                   skip = 2, tr = NULL, poly_det_ord = 3, spike_detect = FALSE,
+                   skip = 2, tr = NULL, pix_dim = NULL, poly_det_ord = 3, spike_detect = FALSE,
                    x_pos = NULL, y_pos = NULL, plot_title = NULL,
                    last_vol = NULL, gen_png = TRUE, gen_res_csv = TRUE,
                    gen_pdf = FALSE, gen_spec_csv = FALSE, png_fname = NULL,
@@ -99,9 +100,15 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   if (is.null(tr)) tr <- pixdim(data)[4]
 
-  x_pix_dim <- pixdim(data)[1]
-  y_pix_dim <- pixdim(data)[2]
-  z_pix_dim <- pixdim(data)[3]
+  if (is.null(pix_dim)) {
+    x_pix_dim <- pixdim(data)[1]
+    y_pix_dim <- pixdim(data)[2]
+    z_pix_dim <- pixdim(data)[3]
+  } else {
+    x_pix_dim <- pix_dim[1]
+    y_pix_dim <- pix_dim[2]
+    z_pix_dim <- pix_dim[3]
+  }
 
   if (is.null(slice_num)) slice_num <- ceiling(dim(data)[3] / 2)
 
@@ -184,6 +191,19 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   bg_blur <- imager::boxblur(bg, round(12/pix_dim))
   max_bg <- max(bg_blur)
   max_bg_perc <- 100 * max_bg / mean_obj_inten
+  mask <- obj_thr_bg[,,1,1]
+
+  bg_dynamics <- data_raw
+  bg_dynamics[mask] <- NA
+  mean_bg_image <- apply(bg_dynamics, c(1,2), mean)
+  bg_sig_intensity_t <- apply(bg_dynamics, 3, mean, na.rm = TRUE)
+  bg_fit <- bg_sig_intensity_t - detrend_fast(bg_sig_intensity_t, X)
+
+  #pdf("test.pdf")
+  #image(mean_bg_image)
+  #plot(bg_sig_intensity_t, type = "l")
+  #lines(bg_fit, type = "l")
+  #dev.off()
 
   if (is.null(x_pos)) {
     x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * cog_image) / sum(cog_image)

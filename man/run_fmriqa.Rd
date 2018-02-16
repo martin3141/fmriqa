@@ -5,11 +5,11 @@
 \title{Run fMRI quality assurance procedure on a NIfTI data file}
 \usage{
 run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
-  tr = NULL, poly_det_ord = 3, spike_detect = FALSE, x_pos = NULL,
-  y_pos = NULL, plot_title = NULL, last_vol = NULL, gen_png = TRUE,
-  gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
-  png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
-  spec_fname = NULL, verbose = TRUE)
+  tr = NULL, pix_dim = NULL, poly_det_ord = 3, spike_detect = FALSE,
+  x_pos = NULL, y_pos = NULL, plot_title = NULL, last_vol = NULL,
+  gen_png = TRUE, gen_res_csv = TRUE, gen_pdf = FALSE,
+  gen_spec_csv = FALSE, png_fname = NULL, res_fname = NULL,
+  pdf_fname = NULL, spec_fname = NULL, verbose = TRUE)
 }
 \arguments{
 \item{data_file}{input data in nifti format, a file chooser will open if not set}
@@ -21,6 +21,8 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 \item{skip}{number of initial volumes to exclude from the analysis (default=2)}
 
 \item{tr}{override the TR detected from data (seconds)}
+
+\item{pix_dim}{override the x,y,z pixel dimensions (mm) detected from data eg pixdim=c(3,3,3)}
 
 \item{poly_det_ord}{polynomial order used for detrending (default=3)}
 
