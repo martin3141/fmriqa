@@ -9,7 +9,8 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
   x_pos = NULL, y_pos = NULL, plot_title = NULL, last_vol = NULL,
   gen_png = TRUE, gen_res_csv = TRUE, gen_pdf = FALSE,
   gen_spec_csv = FALSE, png_fname = NULL, res_fname = NULL,
-  pdf_fname = NULL, spec_fname = NULL, verbose = TRUE)
+  pdf_fname = NULL, spec_fname = NULL, verbose = TRUE, bg_smooth = 12,
+  bg_shrink = 25)
 }
 \arguments{
 \item{data_file}{input data in nifti format, a file chooser will open if not set}
@@ -53,6 +54,12 @@ run_fmriqa(data_file = NULL, roi_width = 21, slice_num = NULL, skip = 2,
 \item{spec_fname}{csv spectral data filename}
 
 \item{verbose}{provide text output while running (default=TRUE)}
+
+\item{bg_smooth}{amount to smooth background image before calculating the
+maximum BG percent metric (default=12mm)}
+
+\item{bg_shrink}{amount to shrink the BG image away from the object to avoid
+residual object signal in the maximum BG percent metric (default=25mm)}
 }
 \value{
 dataframe of QA metrics

@@ -21,6 +21,10 @@
 #' @param pdf_fname pdf plot filename
 #' @param spec_fname csv spectral data filename
 #' @param verbose provide text output while running (default=TRUE)
+#' @param bg_smooth amount to smooth background image before calculating the
+#' maximum BG percent metric (default=12mm)
+#' @param bg_shrink amount to shrink the BG image away from the object to avoid
+#' residual object signal in the maximum BG percent metric (default=25mm)
 #' @return dataframe of QA metrics
 #' @examples
 #' fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
@@ -41,12 +45,13 @@
 #' @importFrom utils write.csv
 #' @export
 run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
-                   skip = 2, tr = NULL, pix_dim = NULL, poly_det_ord = 3, spike_detect = FALSE,
-                   x_pos = NULL, y_pos = NULL, plot_title = NULL,
-                   last_vol = NULL, gen_png = TRUE, gen_res_csv = TRUE,
-                   gen_pdf = FALSE, gen_spec_csv = FALSE, png_fname = NULL,
-                   res_fname = NULL, pdf_fname = NULL, spec_fname = NULL,
-                   verbose = TRUE) {
+                   skip = 2, tr = NULL, pix_dim = NULL, poly_det_ord = 3,
+                   spike_detect = FALSE, x_pos = NULL, y_pos = NULL,
+                   plot_title = NULL, last_vol = NULL, gen_png = TRUE,
+                   gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
+                   png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
+                   spec_fname = NULL, verbose = TRUE, bg_smooth = 12,
+                   bg_shrink = 25) {
 
   if (is.null(data_file)) {
     filters <- matrix(c("NIfTI", ".nii.gz", "NIfTI", ".nii",
@@ -183,12 +188,12 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   # find max background intensity
   pix_dim <- min(c(x_pix_dim, y_pix_dim))
-  # grow by 25mm
-  obj_thr_bg <- imager::grow(obj_thr, round(25/pix_dim))
+  # shrink BG to avoid object pixels
+  obj_thr_bg <- imager::grow(obj_thr, round(bg_shrink/pix_dim))
   bg <- av_image_cimg
   bg[obj_thr_bg] <- 0
-  # blur by 12mm
-  bg_blur <- imager::boxblur(bg, round(12/pix_dim))
+  # smooth BG
+  bg_blur <- imager::boxblur(bg, round(bg_smooth/pix_dim))
   max_bg <- max(bg_blur)
   max_bg_perc <- 100 * max_bg / mean_obj_inten
   mask <- obj_thr_bg[,,1,1]
@@ -198,12 +203,6 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   mean_bg_image <- apply(bg_dynamics, c(1,2), mean)
   bg_sig_intensity_t <- apply(bg_dynamics, 3, mean, na.rm = TRUE)
   bg_fit <- bg_sig_intensity_t - detrend_fast(bg_sig_intensity_t, X)
-
-  #pdf("test.pdf")
-  #image(mean_bg_image)
-  #plot(bg_sig_intensity_t, type = "l")
-  #lines(bg_fit, type = "l")
-  #dev.off()
 
   if (is.null(x_pos)) {
     x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * cog_image) / sum(cog_image)
@@ -405,8 +404,14 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     geom_line(aes(y = fit), color = "red") +
     theme(legend.position = "none") +
     labs(y = "Intensity (a.u.)", x = "Time (volumes)",
-         title = "Intensity drift plot") + marg
+         title = "ROI intensity drift plot") + marg
 
+  tc_fit_bg <- data.frame(t = vols, tc = bg_sig_intensity_t, fit = bg_fit)
+  tc_plot_bg <- ggplot(tc_fit_bg, aes(t)) + geom_line(aes(y = tc)) +
+    geom_line(aes(y = fit), color = "red") +
+    theme(legend.position = "none") +
+    labs(y = "Intensity (a.u.)", x = "Time (volumes)",
+         title = "BG intensity drift plot") + marg
 
   spec_plot <- qplot(freq, spec, xlab = "Frequency (Hz)",
                      ylab = "Intensity (a.u.)", geom = "line",
@@ -447,6 +452,13 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   # useful for checking where the ROI really is
   # av_image[ROI_x,ROI_y] = 0
 
+  bg_plot <- ggplot(melt(mean_bg_image), aes(Var1, Var2, fill = value)) +
+    geom_raster(interpolate = TRUE) +
+    scale_fill_gradientn(colours = image_cols, na.value = "white") +
+    coord_fixed(ratio = 1) + labs(x = "", y = "", fill = "Intensity",
+                                  title = "Mean BG image") +
+    marg + scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
+
   av_plot <- ggplot(melt(av_image), aes(Var1, Var2, fill = value)) +
     geom_raster(interpolate = TRUE) +
     scale_fill_gradientn(colours = image_cols) +
@@ -484,40 +496,40 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   }
 
   if (gen_pdf) {
-    pdf(pdf_file, height = 10, width = 16)
+    pdf(pdf_file, height = 10, width = 20)
     if (spike_detect) {
-      lay <- rbind(c(1,5,6,9),
-                   c(4,2,2,3),
-                   c(7,8,8,10))
+      lay <- rbind(c(1,5,9,11,11),
+                   c(4,10,3,2,2),
+                   c(7,6,12,8,8))
       grid.arrange(text, tc_plot, spec_plot, av_plot, diff_plot, sfnr_plot, tfn_plot,
-                   slice_tc_plot, rdc_plot, max_slice_proj_plot, layout_matrix = lay,
-                   top = title)
+                   slice_tc_plot, rdc_plot, bg_plot, tc_plot_bg, max_slice_proj_plot,
+                   layout_matrix = lay, top = title)
     } else {
-      lay <- rbind(c(1,5,6,9),
-                   c(4,2,2,3),
-                   c(7,8,8,8))
+      lay <- rbind(c(1,5,9,11,11),
+                   c(4,10,3,2,2),
+                   c(7,6,8,8,8))
       grid.arrange(text, tc_plot, spec_plot, av_plot, diff_plot, sfnr_plot, tfn_plot,
-                   slice_tc_plot, rdc_plot, layout_matrix = lay,
+                   slice_tc_plot, rdc_plot, bg_plot, tc_plot_bg, layout_matrix = lay,
                    top = title)
     }
     graphics.off()
   }
 
   if (gen_png) {
-    png(png_file, height = 800, width = 1200, type = "cairo")
+    png(png_file, height = 800, width = 1500, type = "cairo")
     if (spike_detect) {
-      lay <- rbind(c(1,5,6,9),
-                   c(4,2,2,3),
-                   c(7,8,8,10))
+      lay <- rbind(c(1,5,9,11,11),
+                   c(4,10,3,2,2),
+                   c(7,6,12,8,8))
       grid.arrange(text, tc_plot, spec_plot, av_plot, diff_plot, sfnr_plot, tfn_plot,
-                   slice_tc_plot, rdc_plot, max_slice_proj_plot, layout_matrix = lay,
-                   top = title)
+                   slice_tc_plot, rdc_plot, bg_plot, tc_plot_bg, max_slice_proj_plot,
+                   layout_matrix = lay, top = title)
     } else {
-      lay <- rbind(c(1,5,6,9),
-                   c(4,2,2,3),
-                   c(7,8,8,8))
+      lay <- rbind(c(1,5,9,11,11),
+                   c(4,10,3,2,2),
+                   c(7,6,8,8,8))
       grid.arrange(text, tc_plot, spec_plot, av_plot, diff_plot, sfnr_plot, tfn_plot,
-                   slice_tc_plot, rdc_plot, layout_matrix = lay,
+                   slice_tc_plot, rdc_plot, bg_plot, tc_plot_bg, layout_matrix = lay,
                    top = title)
     }
     graphics.off()
