@@ -178,9 +178,10 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   # set na values to zero
   SFNR_full[is.na(SFNR_full)] <- 0
 
-  # threshold the image to reduce inhomogenity for cog calc
+  # threshold the image using edge detection to reduce inhomogenity for cog calc
   av_image_cimg <- imager::as.cimg(av_image)
-  obj_thr <- imager::threshold(av_image_cimg)
+  obj_thr <- imager::px.flood(imager::as.cimg(imager::cannyEdges(av_image_cimg)), x_dim / 2, y_dim / 2)
+
   cog_image <- obj_thr[,]
 
   # mean object intensity
