@@ -1,5 +1,6 @@
 # fmriqa 0.4.0
 * Edge detection is now used to improve object position detection.
+* Added run_fmriqa_glob function for the analysis of multiple files.
 
 # fmriqa 0.3.0
 * Improved method for calculating the object center of gravity for automated

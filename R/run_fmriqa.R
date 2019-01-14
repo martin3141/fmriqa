@@ -215,6 +215,19 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     y_pos <- round(y_pos)
   }
 
+  # measure image position as a function of time
+  #anal_vols <- dim(data_raw)[3]
+  #disp_array <- rep(NA, anal_vols)
+  #for (n in 1:anal_vols) {
+  #  image <- data_raw[,,n]
+  #  image <- imager::cannyEdges(imager::as.cimg(image))[,]
+  #  x_pos <- sum(array(1:x_dim, c(x_dim, y_dim)) * image) / sum(image)
+  #  y_pos <- sum(t(array(1:y_dim, c(y_dim, x_dim))) * image) / sum(image)
+  #  disp_array[n] = (x_pos ^ 2 + y_pos ^ 2) ^ 0.5
+  #}
+  #plot(disp_array)
+  #print(diff(range(disp_array)))
+
   # get ROI indices
   ROI_x <- get_pixel_range(x_pos, roi_width)
   ROI_y <- get_pixel_range(y_pos, roi_width)
@@ -438,7 +451,6 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                         colour = lcol)
 
 
-
   top_val <- quantile(SFNR_full,0.999)
   SFNR_full <- ifelse(SFNR_full > top_val, top_val, SFNR_full)
 
@@ -547,6 +559,23 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   }
 
   results_tab
+}
+
+#' Run fMRI quality assurance procedure on a set of NIfTI data files
+#'
+#' @param pattern glob expresion to match analysis files
+#' @param ... options to pass to run_fmriqa function
+#' @export
+run_fmriqa_glob <- function(pattern, ...) {
+  files <- Sys.glob(pattern)
+  res <- NULL
+  cat(paste(length(files), "file(s) found.\n"))
+  for (file in files) {
+    cat(file, "\n")
+    temp_res <- run_fmriqa(file, ...)
+    res <- rbind(res, temp_res)
+  }
+  res
 }
 
 #' @import RcppEigen
