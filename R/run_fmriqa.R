@@ -578,6 +578,21 @@ run_fmriqa_glob <- function(pattern, ...) {
   res
 }
 
+#' Combine fmriqa csv result files into a dataframe
+#' @param pattern glob pattern to match the csv result files (eg "*.csv")
+#' @return a dataframe of results
+#' @export
+combine_res_glob <- function(pattern) {
+  files <- Sys.glob(pattern)
+  cat(paste(length(files), "file(s) found.\n"))
+  res <- NULL
+  for (file in files) {
+    temp_res <- utils::read.csv(file)
+    res <- rbind(res, temp_res)
+  }
+  res
+}
+
 #' @import RcppEigen
 detrend_fast <- function(y, X) {
   fastLmPure(y = y, X = X)$residual
