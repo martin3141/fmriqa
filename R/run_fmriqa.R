@@ -93,7 +93,6 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     spec_file <- spec_fname
   }
 
-  #image_cols <- inferno(64)
   image_cols <- viridis(64)
 
   if (verbose) cat(paste("Reading data  : ", data_file, "\n\n", sep = ""))
