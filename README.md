@@ -1,17 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-fmriqa
-======
 
-[![Travis build status](https://travis-ci.org/martin3141/fmriqa.svg?branch=master)](https://travis-ci.org/martin3141/fmriqa) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/martin3141/fmriqa?branch=master&svg=true)](https://ci.appveyor.com/project/martin3141/fmriqa) [![](http://cranlogs.r-pkg.org/badges/fmriqa)](http://cran.rstudio.com/web/packages/fmriqa/index.html) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa) [![Coverage Status](https://coveralls.io/repos/github/martin3141/fmriqa/badge.svg?branch=master)](https://coveralls.io/github/martin3141/fmriqa?branch=master)
+# fmriqa
 
-Overview
---------
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/fmriqa)](https://cran.r-project.org/package=fmriqa)
 
-The fmriqa package provides an implementation of the fMRI quality assurance (QA) analysis protocol detailed by Friedman and Glover (2006) <doi:10.1002/jmri.20583>.
+## Overview
 
-Installation
-------------
+The fmriqa package provides an implementation of the fMRI quality
+assurance (QA) analysis protocol detailed by Friedman and Glover (2006)
+<doi:10.1002/jmri.20583>.
+
+## Installation
 
 You can install the stable version of fmriqa from CRAN:
 
@@ -19,15 +19,15 @@ You can install the stable version of fmriqa from CRAN:
 install.packages("fmriqa", dependencies = TRUE)
 ```
 
-Or the the development version from GitHub (requires `devtools` package):
+Or the the development version from GitHub (requires `devtools`
+package):
 
 ``` r
 install.packages("devtools")
 devtools::install_github("martin3141/fmriqa")
 ```
 
-Usage
------
+## Usage
 
 ``` r
 # load the package
@@ -40,26 +40,27 @@ library(fmriqa)
 run_fmriqa()
 ```
 
-Real data example
------------------
+## Real data example
 
 ``` r
 library(fmriqa)
 fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
-res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 3)
+res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE,
+                  tr = 3, bg_shrink = 15)
 ```
 
-    ## Reading data  : C:/Users/home/Documents/R/win-library/3.4/fmriqa/extdata/qa_data.nii.gz
+    ## Reading data  : /home/martin/R/x86_64-pc-linux-gnu-library/4.5/fmriqa/extdata/qa_data.nii.gz
     ## 
     ## Basic analysis parameters
     ## -------------------------
-    ## X,Y dims      : 80x80
-    ## Slices        : 1
-    ## TR            : 3s
-    ## Slice #       : 1
-    ## ROI width     : 21
-    ## Total vols    : 200
-    ## Analysis vols : 198
+    ## X,Y matrix     : 80x80
+    ## Slices         : 1
+    ## X,Y,Z pix dims : 1x1x1mm
+    ## TR             : 3s
+    ## Slice #        : 1
+    ## ROI width      : 21
+    ## Total vols     : 200
+    ## Analysis vols  : 198
     ## 
     ## QA metrics
     ## ----------
@@ -73,16 +74,16 @@ res <- run_fmriqa(data_file = fname, gen_png = FALSE, gen_res_csv = FALSE, tr = 
     ## RDC           : 2.84
     ## TC outlier    : 2.66
     ## Spec outlier  : 5.12
+    ## MBG percent   : 1.14
 
-Simulation example
-------------------
+## Simulation example
 
 ``` r
 library(fmriqa)
 library(oro.nifti)
 ```
 
-    ## oro.nifti 0.7.2
+    ## oro.nifti 0.11.4
 
 ``` r
 # generate random data
@@ -92,22 +93,28 @@ sim_data[20:60, 20:60, 1, ] <- sim_data[20:60, 20:60, 1, ] + 50
 sim_nifti <- oro.nifti::as.nifti(sim_data)
 fname <- tempfile()
 writeNIfTI(sim_nifti, fname)
-
-# perform qa
-res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
 ```
 
-    ## Reading data  : C:\Users\home\AppData\Local\Temp\Rtmpue4USt\file205c578c3088
+    ## [1] "/tmp/RtmpLjqgDg/file4ed26471dbfd.nii.gz"
+
+``` r
+# perform qa
+res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE, t1_canny = 1,
+                  t2_canny = 2)
+```
+
+    ## Reading data  : /tmp/RtmpLjqgDg/file4ed26471dbfd
     ## 
     ## Basic analysis parameters
     ## -------------------------
-    ## X,Y dims      : 80x80
-    ## Slices        : 1
-    ## TR            : 1s
-    ## Slice #       : 1
-    ## ROI width     : 21
-    ## Total vols    : 100
-    ## Analysis vols : 98
+    ## X,Y matrix     : 80x80
+    ## Slices         : 1
+    ## X,Y,Z pix dims : 1x1x1mm
+    ## TR             : 1s
+    ## Slice #        : 1
+    ## ROI width      : 21
+    ## Total vols     : 100
+    ## Analysis vols  : 98
     ## 
     ## QA metrics
     ## ----------
@@ -121,6 +128,7 @@ res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE)
     ## RDC           : 21.77
     ## TC outlier    : 2.74
     ## Spec outlier  : 4.04
+    ## MBG percent   : 0.07
 
 ``` r
 res$snr
@@ -128,7 +136,6 @@ res$snr
 
     ## [1] 51.74954
 
-Plot output from real data showing RF spiking artifact
-------------------------------------------------------
+## Plot output from real data showing RF spiking artifact
 
 ![](SPIKE_EG_qa_plot.png)

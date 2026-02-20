@@ -25,6 +25,10 @@
 #' maximum BG percent metric (default=12mm)
 #' @param bg_shrink amount to shrink the BG image away from the object to avoid
 #' residual object signal in the maximum BG percent metric (default=25mm)
+#' @param t1_canny threshold for weak edges for Canny edge detector (defaults to
+#' auto detect)
+#' @param t2_canny threshold for strong edges for Canny edge detector (defaults
+#' to auto detect)
 #' @return dataframe of QA metrics
 #' @examples
 #' fname <- system.file("extdata", "qa_data.nii.gz", package = "fmriqa")
@@ -51,7 +55,7 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
                    gen_res_csv = TRUE, gen_pdf = FALSE, gen_spec_csv = FALSE,
                    png_fname = NULL, res_fname = NULL, pdf_fname = NULL,
                    spec_fname = NULL, verbose = TRUE, bg_smooth = 12,
-                   bg_shrink = 25) {
+                   bg_shrink = 25, t1_canny = NULL, t2_canny = NULL) {
 
   if (is.null(data_file)) {
     filters <- matrix(c("NIfTI", ".nii.gz", "NIfTI", ".nii",
@@ -179,7 +183,15 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   # threshold the image using edge detection to reduce inhomogenity for cog calc
   av_image_cimg <- imager::as.cimg(av_image)
-  obj_thr <- imager::px.flood(imager::as.cimg(imager::cannyEdges(av_image_cimg)), x_dim / 2, y_dim / 2)
+
+  if (is.null(t1_canny)) {
+    obj_thr <- imager::px.flood(imager::as.cimg(
+               imager::cannyEdges(av_image_cimg)), x_dim / 2, y_dim / 2)
+  } else {
+    obj_thr <- imager::px.flood(imager::as.cimg(
+               imager::cannyEdges(av_image_cimg, t1 = t1_canny, t2 = t2_canny)),
+                                  x_dim / 2, y_dim / 2)
+  }
 
   cog_image <- obj_thr[,]
 
@@ -188,10 +200,12 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
 
   # find max background intensity
   pix_dim <- min(c(x_pix_dim, y_pix_dim))
+
   # shrink BG to avoid object pixels
   obj_thr_bg <- imager::grow(obj_thr, round(bg_shrink/pix_dim))
   bg <- av_image_cimg
   bg[obj_thr_bg] <- 0
+
   # smooth BG
   bg_blur <- imager::boxblur(bg, round(bg_smooth/pix_dim))
   max_bg <- max(bg_blur)

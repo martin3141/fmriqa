@@ -1,5 +1,6 @@
 # fmriqa 0.5.0
 * Replaced (depreciated) qplot call with ggplot.
+* Added t1_canny and t2_canny options for when auto threshold detect fails.
 
 # fmriqa 0.4.0
 * Edge detection is now used to improve object position detection.

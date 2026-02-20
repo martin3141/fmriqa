@@ -27,7 +27,9 @@ run_fmriqa(
   spec_fname = NULL,
   verbose = TRUE,
   bg_smooth = 12,
-  bg_shrink = 25
+  bg_shrink = 25,
+  t1_canny = NULL,
+  t2_canny = NULL
 )
 }
 \arguments{
@@ -78,6 +80,12 @@ maximum BG percent metric (default=12mm)}
 
 \item{bg_shrink}{amount to shrink the BG image away from the object to avoid
 residual object signal in the maximum BG percent metric (default=25mm)}
+
+\item{t1_canny}{threshold for weak edges for Canny edge detector (defaults to
+auto detect)}
+
+\item{t2_canny}{threshold for strong edges for Canny edge detector (defaults
+to auto detect)}
 }
 \value{
 dataframe of QA metrics
