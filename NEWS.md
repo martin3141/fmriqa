@@ -1,3 +1,6 @@
+# fmriqa 0.5.0
+* Replaced (depreciated) qplot call with ggplot.
+
 # fmriqa 0.4.0
 * Edge detection is now used to improve object position detection.
 * Added run_fmriqa_glob function for the analysis of multiple files.

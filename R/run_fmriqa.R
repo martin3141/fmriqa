@@ -389,7 +389,8 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   raw_text <- paste(line1, line2, line3, line4, line5, line6, line7, line8,
                     line9, line10, line11, sep = "")
 
-  text <- textGrob(raw_text, x = 0.2, just = 0, gp = gpar(fontfamily = "mono", fontsize = 12))
+  text <- textGrob(raw_text, x = 0.2, just = 0, gp = gpar(fontfamily = "mono",
+                                                          fontsize = 12))
 
   # these are to appease R checks
   Measured <- NULL
@@ -403,14 +404,16 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
   value <- NULL
 
   # RDC plot
-  rdc_df <- data.frame(roi_width_vec = 1:roi_width, Theoretical = CV_ideal, Measured = CV)
+  rdc_df <- data.frame(roi_width_vec = 1:roi_width, Theoretical = CV_ideal,
+                       Measured = CV)
   rdc_df <- gather(rdc_df, group, CV, c(Measured, Theoretical))
 
-  rdc_plot <- ggplot(rdc_df, aes(x = roi_width_vec, y = CV, colour = group)) + geom_line() +
-    geom_point() + scale_x_log10(limits = c(1,100)) +
+  rdc_plot <- ggplot(rdc_df, aes(x = roi_width_vec, y = CV, colour = group)) +
+    geom_line() + geom_point() + scale_x_log10(limits = c(1,100)) +
     scale_y_log10(limits = c(0.01,10), breaks = c(0.01,0.1,1,10)) +
     labs(y = "100*CV", x = "ROI width (pixels)", title = "RDC plot") + marg +
-    theme(legend.position = c(0.8, 0.8)) + scale_color_manual(values = c("black","red"))
+    theme(legend.position = c(0.8, 0.8)) +
+    scale_color_manual(values = c("black","red"))
 
   tc_fit <- data.frame(t = vols, tc = mean_sig_intensity_t, fit = y_fit)
   tc_plot <- ggplot(tc_fit, aes(t)) + geom_line(aes(y = tc)) +
@@ -426,16 +429,16 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     labs(y = "Intensity (a.u.)", x = "Time (volumes)",
          title = "BG intensity drift plot") + marg
 
-  spec_plot <- qplot(freq, spec, xlab = "Frequency (Hz)",
-                     ylab = "Intensity (a.u.)", geom = "line",
-                     main = "Fluctuation spectrum") + marg
+  spec_plot <- ggplot(mapping = aes(x = freq, y = spec)) + geom_line() +
+               labs(y = "Intensity (a.u.)", x = "Frequency (Hz)",
+               title = "Fluctuation spectrum") + marg
 
-  x_st = ROI_x[1]
-  x_end = ROI_x[length(ROI_x)]
-  y_st = ROI_y[1]
-  y_end = ROI_y[length(ROI_y)]
+  x_st  <- ROI_x[1]
+  x_end <- ROI_x[length(ROI_x)]
+  y_st  <- ROI_y[1]
+  y_end <- ROI_y[length(ROI_y)]
 
-  lcol <- "white"
+  lcol  <- "white"
 
   roi_a <- geom_segment(aes(x = x_st, xend = x_st, y = y_st, yend = y_end),
                         colour = lcol)
@@ -469,7 +472,8 @@ run_fmriqa <- function(data_file = NULL, roi_width = 21, slice_num = NULL,
     scale_fill_gradientn(colours = image_cols, na.value = "white") +
     coord_fixed(ratio = 1) + labs(x = "", y = "", fill = "Intensity",
                                   title = "Mean BG image") +
-    marg + scale_x_continuous(expand = c(0, 0)) + scale_y_continuous(expand = c(0, 0))
+    marg + scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0))
 
   av_plot <- ggplot(melt(av_image), aes(Var1, Var2, fill = value)) +
     geom_raster(interpolate = TRUE) +

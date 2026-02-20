@@ -11,7 +11,7 @@ Description: Methods for performing fMRI quality assurance (QA) measurements of
 BugReports: https://github.com/martin3141/fmriqa/issues
 License: GPL-3
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.3.3
 Imports:
   viridisLite,
   RNifti,
