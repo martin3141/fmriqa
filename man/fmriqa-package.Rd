@@ -25,6 +25,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Martin Wilson \email{martin@pipegrep.co.uk}
+\strong{Maintainer}: Martin Wilson \email{martin.wilson111@gmail.com}
 
 }
