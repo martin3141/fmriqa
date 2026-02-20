@@ -6,3 +6,4 @@
 ^.*\.png$
 ^\.travis\.yml$
 ^appveyor\.yml$
+^CRAN-SUBMISSION$
