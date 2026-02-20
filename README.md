@@ -95,7 +95,7 @@ fname <- tempfile()
 writeNIfTI(sim_nifti, fname)
 ```
 
-    ## [1] "/tmp/RtmpLjqgDg/file4ed26471dbfd.nii.gz"
+    ## [1] "/tmp/Rtmp13OY0H/file5a94514bf0bf.nii.gz"
 
 ``` r
 # perform qa
@@ -103,7 +103,7 @@ res <- run_fmriqa(fname, gen_png = FALSE, gen_res_csv = FALSE, t1_canny = 1,
                   t2_canny = 2)
 ```
 
-    ## Reading data  : /tmp/RtmpLjqgDg/file4ed26471dbfd
+    ## Reading data  : /tmp/Rtmp13OY0H/file5a94514bf0bf
     ## 
     ## Basic analysis parameters
     ## -------------------------
