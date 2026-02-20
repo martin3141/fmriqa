@@ -3,7 +3,7 @@ Type: Package
 Title: Functional MRI Quality Assurance Routines
 Version: 0.5.0
 Date: 2026-02-20
-Authors@R: person("Martin", "Wilson", email = "martin@pipegrep.co.uk",
+Authors@R: person("Martin", "Wilson", email = "martin.wilson111@gmail.com",
                    role = c("cre","aut"))
 Description: Methods for performing fMRI quality assurance (QA) measurements of
   test objects. Heavily  based on the fBIRN procedures detailed by Friedman and 
